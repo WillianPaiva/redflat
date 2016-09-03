@@ -39,7 +39,7 @@ function keyboard.handler()
 
 	if handler then
 		navigator:run(true)
-		return handler(c, function() navigator:close(true) end)
+    return handler(c, function() navigator:close(true) end)
 	end
 end
 

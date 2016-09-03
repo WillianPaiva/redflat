@@ -260,7 +260,7 @@ end
 -- Keygrabber
 -----------------------------------------------------------------------------------------------------------------------
 data.keygrabber = function(mod, key, event)
-	if event == "press" then return false
+  if event ~= "press" then return false
 	elseif hasitem(grid.keys.exit, key) then
 		if data.on_close then data.on_close() end
 		client.disconnect_signal("focus", update_rail)

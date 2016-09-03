@@ -306,7 +306,7 @@ end
 -- TODO: improve resize direction finding for tile layout
 --------------------------------------------------------------------------------
 local function fair_keygrabber(mod, key, event)
-	if event == "press" then return false
+  if event ~= "press" then return false
 	elseif hasitem(common.keys.exit, key) then
 		if last.on_close then last.on_close() end
 		awful.keygrabber.stop(last.keygrabber)
@@ -324,7 +324,7 @@ local function tile_keygrabber_constructor(dir)
 	local horizontal_action = (dir == "left" or dir == "right") and awful.tag.incmwfact or awful.client.incwfact
 
 	return function(mod, key, event)
-		if event == "press" then return false
+    if event ~= "press" then return false
 		elseif hasitem(common.keys.exit, key) then
 			if last.on_close then last.on_close() end
 			awful.keygrabber.stop(last.keygrabber)

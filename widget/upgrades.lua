@@ -59,14 +59,20 @@ function upgrades.new(update_timeout, style)
 
 	-- Update info function
 	--------------------------------------------------------------------------------
-	local function update_count(output)
-		local c = string.match(output, "(%d+)%supgraded")
-		object.tp:set_text(c .. " updates")
+  local function update_count(output)
+    local c  = select(2, output:gsub('\n', '\n'))
+    -- local c = 0
+    -- if output ~= nil then
+    --   for line in output:lines() do
+    --     c = c + 1
+    --   end
+    -- end
+    object.tp:set_text(output)
 
-		local color = tonumber(c) > 0 and style.color.main or style.color.icon
+    local color = c > 0 and style.color.main or style.color.icon
 		object.widget:set_color(color)
 
-		if style.need_notify and (tonumber(c) > 0 or force_notify) then
+    if style.need_notify and (c > 0 or force_notify) then
 			rednotify:show({ text = c .. " updates available", icon = style.notify_icon })
 		end
 	end
@@ -74,7 +80,7 @@ function upgrades.new(update_timeout, style)
 	function object.update(args)
 		local args = args or {}
 		force_notify = args.is_force
-		asyncshell.request("apt-get --just-print upgrade", update_count, 30)
+    asyncshell.request("yaourt -Qub /tmp/checkup-db-username", update_count, 30)
 	end
 
 	-- Set update timer

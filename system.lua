@@ -333,11 +333,11 @@ function system.thermal.hddtemp(args)
 	local port = args.port or "7634"
 	local disk = args.disk or "/dev/sda"
 
-	local output = awful.util.pread(
-		"echo | curl --connect-timeout 1 -fsm 3 telnet://127.0.0.1:" .. port .. " | grep " .. disk
-	)
-	local temp = string.match(output, "|(%d+)|[CF]|")
-
+  --local output = awful.util.pread(
+    --"echo 35" .. disk
+  --)
+  --local temp = string.match("|"..output.."|c|", "|(%d+)|[CF]|")
+    local temp = 35
 	return temp and { tonumber(temp) } or { 0 }
 end
 
@@ -345,11 +345,7 @@ end
 ------------------------------------------------------------
 function system.thermal.nvoptimus()
 	local temp = 0
-	local nvidia_on = string.find(awful.util.pread("cat /proc/acpi/bbswitch"), "ON")
-
-	if nvidia_on ~= nil then
-		temp = string.match(awful.util.pread("optirun -b none nvidia-settings -c :8 -q gpucoretemp -t"), "[^\n]+")
-	end
+    temp = awful.util.pread("nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits")
 
 	return { tonumber(temp), off = nvidia_on == nil }
 end

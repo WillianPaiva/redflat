@@ -34,10 +34,10 @@ map.keys = {
 	move_down  = { "Down" },
 	move_left  = { "Left" },
 	move_right = { "Right" },
-	resize_up    = { "k", "K" },
-	resize_down  = { "j", "J" },
-	resize_left  = { "h", "H" },
-	resize_right = { "l", "L" },
+	resize_down    = { "k", "K" },
+	resize_up  = { "j", "J" },
+	resize_right  = { "h", "H" },
+	resize_left = { "l", "L" },
 	aim          = { "f", "F" },
 	swap         = { "s", "S" },
 	last         = { "i", "I" },
@@ -382,28 +382,47 @@ end
 -- Keygrabber
 -----------------------------------------------------------------------------------------------------------------------
 data.keygrabber = function(mod, key, event)
-	local total = hasitem(mod, map.keys.mod.total)
-	local step = total and 5 * map.fstep or map.fstep
-	if event == "press" then return false
-	elseif hasitem(map.keys.exit, key) then
-		if data.on_close then data.on_close() end
-		awful.keygrabber.stop(data.keygrabber)
-		data.smartclose = false
-	elseif navigator.raw_keygrabber(mod, key, event) then
-	elseif hasitem(map.keys.move_up, key)    then awful.client.swap.bydirection("up")
-	elseif hasitem(map.keys.move_down, key)  then awful.client.swap.bydirection("down")
-	elseif hasitem(map.keys.move_left, key)  then awful.client.swap.bydirection("left")
-	elseif hasitem(map.keys.move_right, key) then awful.client.swap.bydirection("right")
-	elseif hasitem(map.keys.aim, key)   then data:set_aim()
-	elseif hasitem(map.keys.swap, key)  then data:swap(total)
-	elseif hasitem(map.keys.last, key)  then data:movelast(total)
-	elseif hasitem(map.keys.fair, key)  then data:set_fair()
-	elseif hasitem(map.keys.resize_up, key)    then data:incfactor(step, true)
-	elseif hasitem(map.keys.resize_down, key)  then data:incfactor(-step, true)
-	elseif hasitem(map.keys.resize_left, key)  then data:incfactor(-step)
-	elseif hasitem(map.keys.resize_right, key) then data:incfactor(step)
-	else return false
-	end
+  local total = hasitem(mod, map.keys.mod.total)
+  local step = total and 5 * map.fstep or map.fstep
+  if event ~= "press" then
+    return false
+  elseif hasitem(map.keys.exit, key) then
+
+    if data.on_close then
+      data.on_close()
+    end
+
+    awful.keygrabber.stop(data.keygrabber)
+    data.smartclose = false
+
+  elseif navigator.raw_keygrabber(mod, key, event) then
+  elseif hasitem(map.keys.move_up, key) then
+    awful.client.swap.bydirection("up")
+  elseif hasitem(map.keys.move_down, key) then
+    awful.client.swap.bydirection("down")
+  elseif hasitem(map.keys.move_left, key)  then
+    awful.client.swap.bydirection("left")
+  elseif hasitem(map.keys.move_right, key) then
+    awful.client.swap.bydirection("right")
+  elseif hasitem(map.keys.aim, key)   then
+    data:set_aim()
+  elseif hasitem(map.keys.swap, key)  then
+    data:swap(total)
+  elseif hasitem(map.keys.last, key)  then
+    data:movelast(total)
+  elseif hasitem(map.keys.fair, key)  then
+    data:set_fair()
+  elseif hasitem(map.keys.resize_up, key)    then
+    data:incfactor(step, true)
+  elseif hasitem(map.keys.resize_down, key)  then
+    data:incfactor(-step, true)
+  elseif hasitem(map.keys.resize_left, key)  then
+    data:incfactor(-step)
+  elseif hasitem(map.keys.resize_right, key) then
+    data:incfactor(step)
+  else
+    return false
+  end
 end
 
 -- Tile function
